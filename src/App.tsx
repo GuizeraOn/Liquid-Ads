@@ -82,7 +82,7 @@ export default function App() {
     }
 
     fetchData()
-  }, [ofertaSlug, refreshCounter])
+  }, [ofertaSlug, refreshCounter, range])
 
   if (loading) {
     return (
