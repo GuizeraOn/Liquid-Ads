@@ -44,40 +44,51 @@ export function DashboardHeader({ ofertas, selectedOferta }: DashboardHeaderProp
         <p className="text-muted-foreground">Acompanhamento diário de campanhas e ofertas.</p>
       </div>
       
-      <div className="flex flex-wrap items-center gap-2">
-        <OfertaSelector ofertas={ofertas} selected={selectedOferta} />
-        <DateRangePicker />
+      <div className="flex flex-col lg:flex-row w-full items-center justify-between gap-6 bg-accent/20 p-4 rounded-2xl border border-border/50">
+        {/* Grupo 1: Filtros */}
+        <div className="flex items-center gap-2">
+          <OfertaSelector ofertas={ofertas} selected={selectedOferta} />
+          <DateRangePicker />
+        </div>
         
-        <Button onClick={() => setIsEntryOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" />
-          Novo Lançamento
-        </Button>
-        
-        <Button variant="outline" onClick={() => setIsOfferOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" />
-          Nova Oferta
-        </Button>
+        {/* Grupo 2: Ações Centro */}
+        <div className="flex items-center gap-3">
+          <Button onClick={() => setIsEntryOpen(true)} className="bg-orange-600 hover:bg-orange-700 shadow-lg shadow-orange-600/20">
+            <Plus className="mr-2 h-4 w-4" />
+            Novo Lançamento
+          </Button>
+          
+          <Button variant="secondary" onClick={() => setIsOfferOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Nova Oferta
+          </Button>
+        </div>
 
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={handleSyncDolar} 
-          disabled={isSyncing}
-          className="text-xs border-dashed"
-        >
-          {isSyncing ? (
-            <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-          ) : (
-            <RefreshCcw className="mr-2 h-3 w-3" />
-          )}
-          Sincronizar Dólar
-        </Button>
+        {/* Grupo 3: Config/Auxiliares */}
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleSyncDolar} 
+            disabled={isSyncing}
+            className="text-xs border-dashed h-9"
+          >
+            {isSyncing ? (
+              <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+            ) : (
+              <RefreshCcw className="mr-2 h-3 w-3" />
+            )}
+            Sincronizar Dólar
+          </Button>
 
-        <Button variant="ghost" size="icon" onClick={() => setIsSettingsOpen(true)}>
-          <Settings className="h-5 w-5" />
-        </Button>
+          <Button variant="ghost" size="icon" className="h-9 w-9" onClick={() => setIsSettingsOpen(true)}>
+            <Settings className="h-5 w-5" />
+          </Button>
 
-        <ThemeToggle />
+          <div className="w-px h-6 bg-border mx-1" />
+
+          <ThemeToggle />
+        </div>
       </div>
 
       <EntryDialog 

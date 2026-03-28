@@ -106,12 +106,10 @@ export default function App() {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <PerformanceChart data={lancamentos} />
-          <WeeklyChart data={semanal} />
-        </div>
-        
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold tracking-tight">Acompanhamento Semanal</h2>
-          <WeeklyTable data={semanal} />
+          <div className="flex flex-col gap-4">
+            <WeeklyChart data={semanal} />
+            <WeeklyTable data={semanal} />
+          </div>
         </div>
         
         <div className="space-y-4">
