@@ -1,9 +1,9 @@
 export const ROAS_COLORS = {
-  excelente: 'text-emerald-500',    // ROAS >= 2.5
-  bom: 'text-green-500',            // ROAS >= 1.5
-  regular: 'text-yellow-500',       // ROAS >= 1.0
-  ruim: 'text-orange-500',          // ROAS >= 0.5
-  pessimo: 'text-red-500',          // ROAS < 0.5
+  excelente: 'text-emerald-400 dark:text-emerald-400',    // ROAS >= 2.5
+  bom: 'text-green-400 dark:text-green-400',            // ROAS >= 1.5
+  regular: 'text-yellow-400 dark:text-yellow-400',       // ROAS >= 1.0
+  ruim: 'text-orange-400 dark:text-orange-400',          // ROAS >= 0.5
+  pessimo: 'text-red-400 dark:text-red-400',             // ROAS < 0.5
 } as const
 
 export const ROAS_BG_COLORS = {
@@ -15,9 +15,9 @@ export const ROAS_BG_COLORS = {
 } as const
 
 export const LUCRO_COLORS = {
-  positivo: 'text-emerald-500 bg-emerald-500/10',  // lucro > 0
+  positivo: 'text-emerald-400 bg-emerald-500/10 dark:text-emerald-400 dark:bg-emerald-500/20',  // lucro > 0
   zero: 'text-muted-foreground',                    // lucro == 0
-  negativo: 'text-red-500 bg-red-500/10',           // lucro < 0
+  negativo: 'text-red-400 bg-red-500/10 dark:text-red-400 dark:bg-red-500/20',           // lucro < 0
 } as const
 
 export const DEFAULT_TAXA_IMPOSTO = 0.13
