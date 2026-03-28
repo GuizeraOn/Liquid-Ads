@@ -65,6 +65,17 @@ export async function getConfiguracoes(): Promise<Configuracao[]> {
   return data as Configuracao[]
 }
 
+export async function getDolarHoje(): Promise<number> {
+  try {
+    const response = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL')
+    const data = await response.json()
+    return Number(data.USDBRL.bid)
+  } catch (error) {
+    console.error('Erro ao buscar dólar:', error)
+    return 5.25 // Fallback
+  }
+}
+
 
 // Mutations
 export async function criarLancamento(formData: FormData) {

@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { toast } from 'sonner'
-import { criarLancamento, editarLancamento } from '@/lib/api'
+import { criarLancamento, editarLancamento, getDolarHoje } from '@/lib/api'
 import { lancamentoSchema } from '@/lib/validators'
 import { Oferta, LancamentoCompleto } from '@/types'
 import { DEFAULT_COTACAO_DOLAR, DEFAULT_TAXA_IMPOSTO } from '@/lib/constants'
@@ -49,6 +49,13 @@ export function EntryDialog({ ofertas, initialData, open, onOpenChange }: EntryD
 
   // Reset form when initialData changes
   useEffect(() => {
+    async function updateDolar() {
+      if (!initialData && open) {
+        const dolar = await getDolarHoje()
+        setValue('cotacao_dolar', Number(dolar.toFixed(4)))
+      }
+    }
+
     if (initialData) {
       reset({
         oferta_id: initialData.oferta_id,
@@ -68,8 +75,9 @@ export function EntryDialog({ ofertas, initialData, open, onOpenChange }: EntryD
         cotacao_dolar: DEFAULT_COTACAO_DOLAR,
         taxa_imposto: DEFAULT_TAXA_IMPOSTO,
       })
+      updateDolar()
     }
-  }, [initialData, reset])
+  }, [initialData, reset, open, setValue])
 
   async function onSubmit(data: EntryFormData) {
     setIsSubmitting(true)
