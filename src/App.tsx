@@ -114,7 +114,7 @@ export default function App() {
       <main className="container mx-auto py-8 px-4 space-y-8">
         <DashboardHeader ofertas={ofertas} selectedOferta={ofertaSlug} initialRange={range} />
         
-        <KPICards data={dashboardGeral} />
+        <KPICards data={lancamentos} />
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <PerformanceChart data={lancamentos} />

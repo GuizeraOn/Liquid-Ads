@@ -1,22 +1,23 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { DashboardGeral } from '@/types'
+import { LancamentoCompleto } from '@/types'
 import { formatCurrency, formatNumber } from '@/lib/formatters'
 import { DollarSign, TrendingUp, TrendingDown, Target, BarChart3, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ROASBadge } from '../shared/ROASBadge'
 
 interface KPICardsProps {
-  data: DashboardGeral[]
+  data: LancamentoCompleto[]
 }
 
 export function KPICards({ data }: KPICardsProps) {
-  const investimentoTotal = data.reduce((acc, curr) => acc + curr.investimento_total, 0)
-  const receitaUSD = data.reduce((acc, curr) => acc + curr.receita_usd_total, 0)
-  const receitaBRL = data.reduce((acc, curr) => acc + curr.receita_brl_total, 0)
-  const lucro = data.reduce((acc, curr) => acc + curr.lucro_total, 0)
-  const roas = investimentoTotal > 0 ? (receitaBRL - investimentoTotal) / investimentoTotal : 0
+  const investimentoTotal = data.reduce((acc, curr) => acc + (curr.investimento || 0), 0)
+  const investimentoComImposto = data.reduce((acc, curr) => acc + (curr.investimento_com_imposto || 0), 0)
+  const receitaUSD = data.reduce((acc, curr) => acc + (curr.receita_usd || 0), 0)
+  const receitaBRL = data.reduce((acc, curr) => acc + (curr.receita_brl || 0), 0)
+  const lucro = data.reduce((acc, curr) => acc + (curr.lucro || 0), 0)
+  const roas = investimentoComImposto > 0 ? (receitaBRL - investimentoComImposto) / investimentoComImposto : 0
   
-  const hasNegativeProfit = data.some(d => d.lucro_total < 0)
+  const hasNegativeProfit = data.some(d => (d.lucro || 0) < 0)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
