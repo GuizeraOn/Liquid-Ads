@@ -10,7 +10,9 @@ import { Oferta } from '@/types'
 import { EntryDialog } from '../forms/EntryDialog'
 import { NewOfferDialog } from '../forms/NewOfferDialog'
 import { SettingsDialog } from '../forms/SettingsDialog'
-import { Settings } from 'lucide-react'
+import { Settings, RefreshCcw, Loader2 } from 'lucide-react'
+import { syncAllDolar } from '@/lib/api'
+import { toast } from 'sonner'
 
 interface DashboardHeaderProps {
   ofertas: Oferta[]
@@ -21,6 +23,19 @@ export function DashboardHeader({ ofertas, selectedOferta }: DashboardHeaderProp
   const [isEntryOpen, setIsEntryOpen] = useState(false)
   const [isOfferOpen, setIsOfferOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isSyncing, setIsSyncing] = useState(false)
+
+  async function handleSyncDolar() {
+    setIsSyncing(true)
+    try {
+      const result = await syncAllDolar()
+      toast.success(`Dólar sincronizado para R$ ${result.valor.toFixed(2)} em todo o histórico!`)
+    } catch (error: any) {
+      toast.error(error.message || 'Erro ao sincronizar dólar')
+    } finally {
+      setIsSyncing(false)
+    }
+  }
 
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
@@ -41,6 +56,21 @@ export function DashboardHeader({ ofertas, selectedOferta }: DashboardHeaderProp
         <Button variant="outline" onClick={() => setIsOfferOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
           Nova Oferta
+        </Button>
+
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleSyncDolar} 
+          disabled={isSyncing}
+          className="text-xs border-dashed"
+        >
+          {isSyncing ? (
+            <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+          ) : (
+            <RefreshCcw className="mr-2 h-3 w-3" />
+          )}
+          Sincronizar Dólar
         </Button>
 
         <Button variant="ghost" size="icon" onClick={() => setIsSettingsOpen(true)}>

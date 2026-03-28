@@ -147,3 +147,25 @@ export async function atualizarConfiguracoes(configuracoes: Record<string, strin
   window.dispatchEvent(new Event('refresh-data'))
   return { success: true }
 }
+
+export async function syncAllDolar() {
+  const supabase = createClient()
+  
+  // 1. Pega a cotação real
+  const dolar = await getDolarHoje()
+  
+  if (!dolar || dolar <= 0) {
+    throw new Error('Não foi possível obter uma cotação válida do dólar.')
+  }
+
+  // 2. Atualiza TODOS os lançamentos de uma vez
+  const { error } = await supabase
+    .from('lancamentos_diarios')
+    .update({ cotacao_dolar: dolar, updated_at: new Date().toISOString() })
+    .neq('id', '00000000-0000-0000-0000-000000000000') // Truque para dar update em todos sem filtrar por ID específico
+
+  if (error) throw error
+  
+  window.dispatchEvent(new Event('refresh-data'))
+  return { success: true, valor: dolar }
+}
