@@ -47,6 +47,7 @@ export function DateRangePicker({
     { label: 'Esta semana', getValue: () => ({ from: startOfWeek(new Date(), { weekStartsOn: 1 }), to: new Date() }) },
     { label: 'Mês atual', getValue: () => ({ from: startOfMonth(new Date()), to: endOfMonth(new Date()) }) },
     { label: 'Últimos 30d', getValue: () => ({ from: subDays(new Date(), 30), to: new Date() }) },
+    { label: 'Todo o período', getValue: () => undefined },
   ]
 
   return (
@@ -72,7 +73,7 @@ export function DateRangePicker({
                   format(date.from, 'dd/MM/yy', { locale: ptBR })
                 )
               ) : (
-                'Selecionar período'
+                'Todo o período'
               )}
             </span>
           </Button>
@@ -98,13 +99,18 @@ export function DateRangePicker({
 
             <div className="flex items-center justify-between px-3 py-2 bg-accent/50 rounded-lg text-sm font-medium">
                <div className="flex items-center gap-2">
-                 <span>{date?.from ? format(date.from, 'dd/MM/yyyy') : '...'}</span>
+                 <span>{date?.from ? format(date.from, 'dd/MM/yyyy') : 'Início'}</span>
                  <span className="text-muted-foreground">→</span>
-                 <span>{date?.to ? format(date.to, 'dd/MM/yyyy') : '...'}</span>
+                 <span>{date?.to ? format(date.to, 'dd/MM/yyyy') : 'Hoje'}</span>
                </div>
                {date?.from && date?.to && (
                  <span className="text-[10px] bg-background px-1.5 py-0.5 rounded border">
                    {differenceInDays(date.to, date.from) + 1} dias
+                 </span>
+               )}
+               {!date && (
+                 <span className="text-[10px] bg-background px-1.5 py-0.5 rounded border italic">
+                   Histórico Completo
                  </span>
                )}
             </div>
