@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { LancamentoCompleto } from '@/types'
+import { LancamentoCompleto, AcompanhamentoSemanal } from '@/types'
 import { formatCurrency, formatNumber } from '@/lib/formatters'
 import { DollarSign, TrendingUp, TrendingDown, Target, BarChart3, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -7,9 +7,10 @@ import { ROASBadge } from '../shared/ROASBadge'
 
 interface KPICardsProps {
   data: LancamentoCompleto[]
+  semanalData?: AcompanhamentoSemanal[]
 }
 
-export function KPICards({ data }: KPICardsProps) {
+export function KPICards({ data, semanalData = [] }: KPICardsProps) {
   const investimentoTotal = data.reduce((acc, curr) => acc + (curr.investimento || 0), 0)
   const investimentoComImposto = data.reduce((acc, curr) => acc + (curr.investimento_com_imposto || 0), 0)
   const receitaUSD = data.reduce((acc, curr) => acc + (curr.receita_usd || 0), 0)
@@ -35,15 +36,32 @@ export function KPICards({ data }: KPICardsProps) {
         </CardContent>
       </Card>
 
-      {/* 2. ROAS (SEGUNDO FOCO) */}
-      <Card className="flex flex-col justify-center">
+      {/* 2. ROAS (OPÇÃO C - COM BREAKDOWN SEMANAL) */}
+      <Card className="flex flex-col justify-between">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
           <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">ROAS</CardTitle>
           <Target className="h-4 w-4 text-orange-500" />
         </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">
-            <ROASBadge value={roas} />
+        <CardContent className="space-y-3">
+          <div className="text-4xl font-bold tracking-tighter">
+            {roas.toFixed(2)}
+          </div>
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {semanalData.slice(-3).map((sem) => (
+              <div 
+                key={sem.inicio_semana} 
+                className={cn(
+                  "px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1 border",
+                  sem.roas >= 2 
+                    ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-500" 
+                    : sem.roas >= 1 
+                      ? "bg-yellow-500/10 border-yellow-500/20 text-yellow-600 dark:text-yellow-500"
+                      : "bg-red-500/10 border-red-500/20 text-red-500"
+                )}
+              >
+                S{sem.numero_semana} <span className="opacity-80">{sem.roas.toFixed(2)}</span>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
