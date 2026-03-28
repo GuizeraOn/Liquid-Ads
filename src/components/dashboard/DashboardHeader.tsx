@@ -14,16 +14,36 @@ import { Settings, RefreshCcw, Loader2 } from 'lucide-react'
 import { syncAllDolar } from '@/lib/api'
 import { toast } from 'sonner'
 
+import { DateRange } from 'react-day-picker'
+import { format } from 'date-fns'
+
 interface DashboardHeaderProps {
   ofertas: Oferta[]
   selectedOferta: string | null
+  initialRange?: DateRange
 }
 
-export function DashboardHeader({ ofertas, selectedOferta }: DashboardHeaderProps) {
+export function DashboardHeader({ ofertas, selectedOferta, initialRange }: DashboardHeaderProps) {
   const [isEntryOpen, setIsEntryOpen] = useState(false)
   const [isOfferOpen, setIsOfferOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
+
+  const handleRangeChange = (range: DateRange | undefined) => {
+    const params = new URLSearchParams(window.location.search)
+    if (range?.from) {
+      params.set('from', format(range.from, 'yyyy-MM-dd'))
+    } else {
+      params.delete('from')
+    }
+    if (range?.to) {
+      params.set('to', format(range.to, 'yyyy-MM-dd'))
+    } else {
+      params.delete('to')
+    }
+    window.history.pushState({}, '', `?${params.toString()}`)
+    window.dispatchEvent(new PopStateEvent('popstate'))
+  }
 
   async function handleSyncDolar() {
     setIsSyncing(true)
@@ -48,7 +68,7 @@ export function DashboardHeader({ ofertas, selectedOferta }: DashboardHeaderProp
         {/* Grupo 1: Filtros */}
         <div className="flex items-center gap-2">
           <OfertaSelector ofertas={ofertas} selected={selectedOferta} />
-          <DateRangePicker />
+          <DateRangePicker onRangeChange={handleRangeChange} initialRange={initialRange} />
         </div>
         
         {/* Grupo 2: Ações Centro */}

@@ -3,18 +3,21 @@ import { DashboardGeral, LancamentoCompleto, AcompanhamentoSemanal, Oferta, Conf
 import { lancamentoSchema, ofertaSchema } from '@/lib/validators'
 
 // Queries
-export async function getDashboardGeral(ofertaSlug?: string): Promise<DashboardGeral[]> {
+export async function getDashboardGeral(ofertaSlug?: string, start?: string, end?: string): Promise<DashboardGeral[]> {
   const supabase = createClient()
   let query = supabase.from('vw_dashboard_geral').select('*')
   if (ofertaSlug && ofertaSlug !== 'todas') {
     query = query.eq('oferta_slug', ofertaSlug)
   }
+  if (start) query = query.gte('data', start)
+  if (end) query = query.lte('data', end)
+  
   const { data, error } = await query
   if (error) throw error
   return data as DashboardGeral[]
 }
 
-export async function getLancamentosCompletos(ofertaSlug?: string): Promise<LancamentoCompleto[]> {
+export async function getLancamentosCompletos(ofertaSlug?: string, start?: string, end?: string): Promise<LancamentoCompleto[]> {
   const supabase = createClient()
   let query = supabase
     .from('vw_lancamentos_completos')
@@ -24,6 +27,9 @@ export async function getLancamentosCompletos(ofertaSlug?: string): Promise<Lanc
   if (ofertaSlug && ofertaSlug !== 'todas') {
     query = query.eq('oferta_slug', ofertaSlug)
   }
+  if (start) query = query.gte('data', start)
+  if (end) query = query.lte('data', end)
+  
   query = query.or('investimento.gt.0,vendas_front.gt.0')
 
   const { data, error } = await query
@@ -31,7 +37,7 @@ export async function getLancamentosCompletos(ofertaSlug?: string): Promise<Lanc
   return data as LancamentoCompleto[]
 }
 
-export async function getAcompanhamentoSemanal(ofertaSlug?: string): Promise<AcompanhamentoSemanal[]> {
+export async function getAcompanhamentoSemanal(ofertaSlug?: string, start?: string, end?: string): Promise<AcompanhamentoSemanal[]> {
   const supabase = createClient()
   let query = supabase
     .from('vw_semanal')
@@ -41,6 +47,9 @@ export async function getAcompanhamentoSemanal(ofertaSlug?: string): Promise<Aco
   if (ofertaSlug && ofertaSlug !== 'todas') {
     query = query.eq('oferta_slug', ofertaSlug)
   }
+  if (start) query = query.gte('inicio_semana', start)
+  if (end) query = query.lte('inicio_semana', end)
+  
   const { data, error } = await query
   if (error) throw error
   return data as AcompanhamentoSemanal[]

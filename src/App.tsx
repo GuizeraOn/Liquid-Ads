@@ -11,6 +11,8 @@ import { ClientPageWrapper } from '@/components/dashboard/ClientPageWrapper'
 import { MetaCostBadge } from '@/components/dashboard/MetaCostBadge'
 import { DashboardGeral, LancamentoCompleto, AcompanhamentoSemanal, Oferta } from '@/types'
 import { Toaster } from '@/components/ui/sonner'
+import { DateRange } from 'react-day-picker'
+import { subDays, parseISO } from 'date-fns'
 
 export default function App() {
   const [ofertas, setOfertas] = useState<Oferta[]>([])
@@ -22,6 +24,7 @@ export default function App() {
   
   // Simple URL parameter reading for SPA
   const [ofertaSlug, setOfertaSlug] = useState<string>('todas')
+  const [range, setRange] = useState<DateRange | undefined>({ from: subDays(new Date(), 7), to: new Date() })
 
   const [refreshCounter, setRefreshCounter] = useState(0)
 
@@ -30,6 +33,12 @@ export default function App() {
       const params = new URLSearchParams(window.location.search)
       const slug = params.get('oferta') || 'todas'
       setOfertaSlug(slug)
+      
+      const from = params.get('from')
+      const to = params.get('to')
+      if (from && to) {
+        setRange({ from: parseISO(from), to: parseISO(to) })
+      }
     }
 
     const handleRefresh = () => {
@@ -50,11 +59,14 @@ export default function App() {
     async function fetchData() {
       try {
         setLoading(true)
+        const from = range?.from ? range.from.toISOString().split('T')[0] : undefined
+        const to = range?.to ? range.to.toISOString().split('T')[0] : undefined
+
         const [ofertasData, dashboardData, lancamentosData, semanalData] = await Promise.all([
           getOfertas(),
-          getDashboardGeral(ofertaSlug),
-          getLancamentosCompletos(ofertaSlug),
-          getAcompanhamentoSemanal(ofertaSlug),
+          getDashboardGeral(ofertaSlug, from, to),
+          getLancamentosCompletos(ofertaSlug, from, to),
+          getAcompanhamentoSemanal(ofertaSlug, from, to),
         ])
         setOfertas(ofertasData)
         setDashboardGeral(dashboardData)
@@ -100,7 +112,7 @@ export default function App() {
   return (
     <>
       <main className="container mx-auto py-8 px-4 space-y-8">
-        <DashboardHeader ofertas={ofertas} selectedOferta={ofertaSlug} />
+        <DashboardHeader ofertas={ofertas} selectedOferta={ofertaSlug} initialRange={range} />
         
         <KPICards data={dashboardGeral} />
         

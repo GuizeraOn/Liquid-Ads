@@ -24,10 +24,18 @@ import {
   differenceInDays 
 } from 'date-fns'
 
+interface DateRangePickerProps {
+  onRangeChange?: (range: DateRange | undefined) => void
+  initialRange?: DateRange
+  className?: string
+}
+
 export function DateRangePicker({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
+  onRangeChange,
+  initialRange
+}: DateRangePickerProps) {
+  const [date, setDate] = React.useState<DateRange | undefined>(initialRange || {
     from: subDays(new Date(), 7),
     to: new Date(),
   })
@@ -120,7 +128,13 @@ export function DateRangePicker({
               <Button variant="ghost" className="flex-1 h-9 text-xs" onClick={() => setIsOpen(false)}>
                 Cancelar
               </Button>
-              <Button className="flex-1 h-9 text-xs bg-primary" onClick={() => setIsOpen(false)}>
+              <Button 
+                className="flex-1 h-9 text-xs bg-primary text-white" 
+                onClick={() => {
+                  if (onRangeChange) onRangeChange(date)
+                  setIsOpen(false)
+                }}
+              >
                 Aplicar período
               </Button>
             </div>
