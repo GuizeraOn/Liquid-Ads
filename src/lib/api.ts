@@ -9,8 +9,9 @@ export async function getDashboardGeral(ofertaSlug?: string, start?: string, end
   if (ofertaSlug && ofertaSlug !== 'todas') {
     query = query.eq('oferta_slug', ofertaSlug)
   }
-  if (start) query = query.gte('data', start)
-  if (end) query = query.lte('data', end)
+  
+  // Nota: vw_dashboard_geral é uma agregação total, 
+  // por isso não filtramos por data aqui no SQL para evitar erro 'column data does not exist'
   
   const { data, error } = await query
   if (error) throw error
