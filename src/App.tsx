@@ -120,7 +120,7 @@ export default function App() {
           />
         </div>
 
-        <MetaCostBadge />
+        <MetaCostBadge lancamentos={lancamentos} />
       </main>
       <Toaster />
     </>
