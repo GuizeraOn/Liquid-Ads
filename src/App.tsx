@@ -38,6 +38,8 @@ export default function App() {
       const to = params.get('to')
       if (from && to) {
         setRange({ from: parseISO(from), to: parseISO(to) })
+      } else {
+        setRange(undefined)
       }
     }
 
