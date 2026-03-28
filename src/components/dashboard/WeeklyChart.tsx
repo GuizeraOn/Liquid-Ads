@@ -51,6 +51,7 @@ export function WeeklyChart({ data }: WeeklyChartProps) {
                 axisLine={false}
               />
               <Tooltip 
+                cursor={{ fill: 'transparent' }}
                 contentStyle={{ 
                   backgroundColor: '#1e293b', 
                   borderColor: '#334155', 
@@ -60,12 +61,13 @@ export function WeeklyChart({ data }: WeeklyChartProps) {
                 itemStyle={{ color: '#f8fafc' }}
                 labelStyle={{ color: '#94a3b8' }}
                 formatter={(value: number, name: string) => {
-                  return [formatCurrency(value), name === 'investimento' ? 'Investimento' : 'Receita']
+                  const label = name === 'investimento' ? 'Investimento' : 'Receita'
+                  return [formatCurrency(value), label]
                 }}
               />
               <Legend verticalAlign="bottom" height={36} />
-              <Bar dataKey="investimento" fill="#64748b" radius={[4, 4, 0, 0]} name="Investimento" />
-              <Bar dataKey="receita" fill="#6366f1" radius={[4, 4, 0, 0]} name="Receita" />
+              <Bar dataKey="investimento" fill="#64748b" radius={[4, 4, 0, 0]} name="investimento" />
+              <Bar dataKey="receita" fill="#6366f1" radius={[4, 4, 0, 0]} name="receita" />
             </BarChart>
           </ResponsiveContainer>
         </div>
