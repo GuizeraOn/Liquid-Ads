@@ -16,8 +16,6 @@ export function KPICards({ data }: KPICardsProps) {
   const receitaBRL = data.reduce((acc, curr) => acc + (curr.receita_brl || 0), 0)
   const lucro = data.reduce((acc, curr) => acc + (curr.lucro || 0), 0)
   const roas = investimentoComImposto > 0 ? (receitaBRL - investimentoComImposto) / investimentoComImposto : 0
-  
-  const hasNegativeProfit = data.some(d => (d.lucro || 0) < 0)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
@@ -34,12 +32,6 @@ export function KPICards({ data }: KPICardsProps) {
           <div className={cn("text-4xl font-extrabold tracking-tighter", lucro > 0 ? 'text-emerald-500' : lucro < 0 ? 'text-red-500' : '')}>
             {formatCurrency(lucro, 'BRL')}
           </div>
-          {hasNegativeProfit && (
-            <div className="flex items-center gap-1.5 text-red-500 font-medium text-[10px] mt-2 animate-pulse">
-              <AlertCircle className="h-3 w-3" />
-              ATENÇÃO: Existem ofertas operando no prejuízo
-            </div>
-          )}
         </CardContent>
       </Card>
 
