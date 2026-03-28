@@ -57,27 +57,24 @@ export function DateRangePicker({
             id="date"
             variant={'outline'}
             className={cn(
-              'w-[280px] justify-start text-left font-normal border-dashed',
+              'h-10 w-[260px] justify-start text-left font-normal border-dashed bg-background/50',
               !date && 'text-muted-foreground'
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4 text-orange-500" />
-            <div className="flex flex-col items-start leading-none gap-1">
-              <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Período</span>
-              <span className="text-sm">
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      {format(date.from, 'dd/MM/yy', { locale: ptBR })} - {format(date.to, 'dd/MM/yy', { locale: ptBR })}
-                    </>
-                  ) : (
-                    format(date.from, 'dd/MM/yy', { locale: ptBR })
-                  )
+            <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground/50" />
+            <span className="text-sm">
+              {date?.from ? (
+                date.to ? (
+                  <>
+                    {format(date.from, 'dd/MM/yy', { locale: ptBR })} - {format(date.to, 'dd/MM/yy', { locale: ptBR })}
+                  </>
                 ) : (
-                  'Selecione as datas'
-                )}
-              </span>
-            </div>
+                  format(date.from, 'dd/MM/yy', { locale: ptBR })
+                )
+              ) : (
+                'Selecionar período'
+              )}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="end">
