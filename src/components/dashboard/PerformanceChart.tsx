@@ -60,6 +60,7 @@ export function PerformanceChart({ data }: PerformanceChartProps) {
                 formatter={(value: number, name: string) => {
                   if (name === 'lucro') return [formatCurrency(value), 'Lucro']
                   if (name === 'roas') return [value.toFixed(2), 'ROAS']
+                  if (name === 'roi') return [value.toFixed(2), 'ROI']
                   return [value, name]
                 }}
               />
@@ -80,6 +81,15 @@ export function PerformanceChart({ data }: PerformanceChartProps) {
                 strokeWidth={3} 
                 dot={false}
                 activeDot={{ r: 6, fill: '#3b82f6' }}
+              />
+              <Line 
+                yAxisId="right" 
+                type="monotone" 
+                dataKey="roi" 
+                stroke="#10b981" 
+                strokeWidth={3} 
+                dot={false}
+                activeDot={{ r: 6, fill: '#10b981' }}
               />
             </LineChart>
           </ResponsiveContainer>

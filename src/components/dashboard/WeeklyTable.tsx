@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { AcompanhamentoSemanal } from '@/types'
 import { formatDate, formatCurrency } from '@/lib/formatters'
-import { ROASBadge } from '../shared/ROASBadge'
+import { ROASBadge, ROIBadge } from '../shared/ROASBadge'
 import { LucroBadge } from '../shared/LucroBadge'
 
 interface WeeklyTableProps {
@@ -21,13 +21,14 @@ export function WeeklyTable({ data }: WeeklyTableProps) {
               <TableHead className="text-right">INVESTIMENTO</TableHead>
               <TableHead className="text-right">RECEITA</TableHead>
               <TableHead className="text-right">LUCRO</TableHead>
+              <TableHead className="text-right">ROI</TableHead>
               <TableHead className="text-right">ROAS</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
                   Nenhum dado semanal encontrado.
                 </TableCell>
               </TableRow>
@@ -41,6 +42,9 @@ export function WeeklyTable({ data }: WeeklyTableProps) {
                   <TableCell className="text-right font-mono">{formatCurrency(row.receita_total, 'BRL')}</TableCell>
                   <TableCell className="text-right">
                     <LucroBadge value={row.lucro_total} />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <ROIBadge value={row.roi} />
                   </TableCell>
                   <TableCell className="text-right">
                     <ROASBadge value={row.roas} />

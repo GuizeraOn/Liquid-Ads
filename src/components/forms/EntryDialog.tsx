@@ -204,12 +204,23 @@ export function EntryDialog({ ofertas, initialData, open, onOpenChange }: EntryD
                   </p>
                 </div>
                 <div className="space-y-0.5">
+                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">ROI</p>
+                  <p className="text-sm font-bold">
+                    {(() => {
+                      const totalInvest = (watch('investimento') || 0) * (1 + (watch('taxa_imposto') || 0));
+                      const totalRec = (watch('receita_usd') || 0) * (watch('cotacao_dolar') || 0);
+                      const roi = totalInvest > 0 ? (totalRec - totalInvest) / totalInvest : 0;
+                      return roi.toFixed(2);
+                    })()}
+                  </p>
+                </div>
+                <div className="space-y-0.5">
                   <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">ROAS</p>
                   <p className="text-sm font-bold">
                     {(() => {
                       const totalInvest = (watch('investimento') || 0) * (1 + (watch('taxa_imposto') || 0));
                       const totalRec = (watch('receita_usd') || 0) * (watch('cotacao_dolar') || 0);
-                      const roas = totalInvest > 0 ? (totalRec - totalInvest) / totalInvest : 0;
+                      const roas = totalInvest > 0 ? totalRec / totalInvest : 0;
                       return roas.toFixed(2);
                     })()}
                   </p>

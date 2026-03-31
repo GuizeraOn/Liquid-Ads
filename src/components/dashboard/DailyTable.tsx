@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { LancamentoCompleto } from '@/types'
 import { formatDate, formatCurrency } from '@/lib/formatters'
-import { ROASBadge } from '../shared/ROASBadge'
+import { ROASBadge, ROIBadge } from '../shared/ROASBadge'
 import { LucroBadge } from '../shared/LucroBadge'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
@@ -47,6 +47,7 @@ export function DailyTable({ data, onEdit }: DailyTableProps) {
               <TableHead>DIA / OFERTA</TableHead>
               <TableHead className="text-right">VENDAS</TableHead>
               <TableHead className="text-right">LUCRO</TableHead>
+              <TableHead className="text-right">ROI</TableHead>
               <TableHead className="text-right">ROAS</TableHead>
               <TableHead className="w-[80px]"></TableHead>
             </TableRow>
@@ -54,7 +55,7 @@ export function DailyTable({ data, onEdit }: DailyTableProps) {
           <TableBody>
             {data.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
                   <div className="flex flex-col items-center gap-2">
                     <Info className="h-8 w-8 opacity-20" />
                     <p>Nenhum lançamento encontrado para o período.</p>
@@ -92,6 +93,9 @@ export function DailyTable({ data, onEdit }: DailyTableProps) {
                       <LucroBadge value={row.lucro} />
                     </TableCell>
                     <TableCell className="text-right">
+                      <ROIBadge value={row.roi} />
+                    </TableCell>
+                    <TableCell className="text-right">
                       <ROASBadge value={row.roas} />
                     </TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
@@ -118,7 +122,7 @@ export function DailyTable({ data, onEdit }: DailyTableProps) {
                   {/* Linha de Detalhes Expandida */}
                   {expandedId === row.id && (
                     <TableRow className="bg-muted/50 hover:bg-muted/50 border-t-0 border-b-2">
-                      <TableCell colSpan={6} className="p-0">
+                      <TableCell colSpan={7} className="p-0">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 pt-0">
                           <div className="rounded-lg bg-background/50 border p-3">
                             <p className="text-[10px] font-bold text-muted-foreground uppercase mb-1">Custo Total</p>

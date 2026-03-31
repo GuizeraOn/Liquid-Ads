@@ -38,6 +38,7 @@ export interface LancamentoCompleto {
   cpa: number
   lucro: number
   roas: number
+  roi: number
 }
 
 export interface AcompanhamentoSemanal {
@@ -50,6 +51,7 @@ export interface AcompanhamentoSemanal {
   receita_total: number
   lucro_total: number
   roas: number
+  roi: number
 }
 
 export interface DashboardGeral {
@@ -61,6 +63,7 @@ export interface DashboardGeral {
   receita_brl_total: number
   lucro_total: number
   roas: number
+  roi: number
   total_vendas: number
   dias_ativos: number
 }

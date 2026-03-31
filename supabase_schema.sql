@@ -76,12 +76,20 @@ SELECT
   CASE
     WHEN ld.investimento > 0
     THEN ROUND(
+      (ld.receita_usd * ld.cotacao_dolar) / (ld.investimento * (1 + ld.taxa_imposto)),
+      2
+    )
+    ELSE 0
+  END AS roas,
+  CASE
+    WHEN ld.investimento > 0
+    THEN ROUND(
       ((ld.receita_usd * ld.cotacao_dolar) - (ld.investimento * (1 + ld.taxa_imposto)))
       / (ld.investimento * (1 + ld.taxa_imposto)),
       2
     )
     ELSE 0
-  END AS roas
+  END AS roi
 FROM lancamentos_diarios ld
 JOIN ofertas o ON o.id = ld.oferta_id
 ORDER BY ld.data ASC;
@@ -107,13 +115,21 @@ SELECT
   CASE
     WHEN SUM(ld.investimento * (1 + ld.taxa_imposto)) > 0
     THEN ROUND(
+      SUM(ld.receita_usd * ld.cotacao_dolar) / SUM(ld.investimento * (1 + ld.taxa_imposto)),
+      2
+    )
+    ELSE 0
+  END AS roas,
+  CASE
+    WHEN SUM(ld.investimento * (1 + ld.taxa_imposto)) > 0
+    THEN ROUND(
       (SUM(ld.receita_usd * ld.cotacao_dolar) -
        SUM(ld.investimento * (1 + ld.taxa_imposto)))
       / SUM(ld.investimento * (1 + ld.taxa_imposto)),
       2
     )
     ELSE 0
-  END AS roas
+  END AS roi
 FROM lancamentos_diarios ld
 JOIN ofertas o ON o.id = ld.oferta_id
 WHERE ld.vendas_front > 0 OR ld.investimento > 0
@@ -137,13 +153,21 @@ SELECT
   CASE
     WHEN SUM(ld.investimento * (1 + ld.taxa_imposto)) > 0
     THEN ROUND(
+      SUM(ld.receita_usd * ld.cotacao_dolar) / SUM(ld.investimento * (1 + ld.taxa_imposto)),
+      2
+    )
+    ELSE 0
+  END AS roas,
+  CASE
+    WHEN SUM(ld.investimento * (1 + ld.taxa_imposto)) > 0
+    THEN ROUND(
       (SUM(ld.receita_usd * ld.cotacao_dolar) -
        SUM(ld.investimento * (1 + ld.taxa_imposto)))
       / SUM(ld.investimento * (1 + ld.taxa_imposto)),
       2
     )
     ELSE 0
-  END AS roas,
+  END AS roi,
   SUM(ld.vendas_front) AS total_vendas,
   COUNT(CASE WHEN ld.vendas_front > 0 THEN 1 END) AS dias_ativos
 FROM lancamentos_diarios ld
